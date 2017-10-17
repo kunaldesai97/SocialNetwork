@@ -29,5 +29,5 @@ class Person(models.Model):
 
 	def insert(self):
 		cursor = connection.cursor();
-		cursor.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
+		cursors.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
 		
