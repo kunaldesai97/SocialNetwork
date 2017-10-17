@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Start</title>
+  <meta charset="utf-8" />
+  {% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+   <style>
+
+   	.page-header{
+  text-align: center;
+  font-weight: 100;
+  font-size: 250%;
+  color:white;
+   }
+
+   .container-fluid{
+   	background-image: url("{% static 'img/pic.png' %}");
+    background-size: cover;
+    min-height: 665px;
+    min-width: 665px;
+
+
+   }
+
+   .sign{
+	color:white;
+	margin-top: 5px;
+	margin-left: 85%;
+	flex:1
+   }
+
+   .login{
+   	color:white;
+	margin-top: 90px;
+   }
+
+   .submit{
+   	margin-top: 40px;
+   	color:white;
+
+   }
+ 
+</style>
+</head>
+
+<body>
+<div class = "container-fluid">
+<div class="page-header">
+	<h1>Social Network</h1>
+</div>
+<div class="sign">
+<h1><a href='signup' style="color:white;">Sign Up</a></h1>
+<div class="login">
+<h2>Login</h2>
+<form method="post">
+	{% csrf_token %}
+	{%if invaliduser%}
+	<h5>Invalid User!!</h5>
+    {%endif%}
+    {%if wrongpassword%}
+	<h5>Wrong Password!!</h5>
+    {%endif%}
+    {{ form.as_p }}
+ <input type="submit" value="Login"/>
+</form>
+</div>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	
+</body>
+</html>	

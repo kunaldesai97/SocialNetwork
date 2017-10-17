@@ -1,0 +1,45 @@
+html, body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  background-image: url(r'/static/img/main.jpeg');
+  background-position: center top;
+  background-size: cover;
+  margin: 0;
+}
+
+.page-title {
+  text-align: center;
+  font-weight: 100;
+  font-size: 250%;
+  color:white;
+}
+
+div {
+  padding-right: 30px;
+  height: 100%;
+  width: 100%;
+}
+
+.container{
+	display:flex;
+}
+
+.home{
+	max-width: 25%;
+    min-width: 250px;
+	color:white;
+	margin-top: 35px;
+	margin-left: 85%;
+	flex:1
+}
+
+
+
+
