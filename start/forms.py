@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from . import models
+
+
 class SignUpForm(forms.ModelForm):
 
     # male = 0
@@ -23,6 +25,10 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = models.Person
         fields = ['username','password']
+
+# class UserHome(forms.ModelForm):
+
+
 
 
 

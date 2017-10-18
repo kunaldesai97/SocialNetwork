@@ -3,4 +3,6 @@ from . import views
 
 urlpatterns = [
 				url(r'^$', views.LoginFormView.as_view(), name ='login'),
-				url(r'^signup/', views.UserFormView.as_view(), name = 'signup')]
+				url(r'^signup/', views.UserFormView.as_view(), name = 'signup'),
+				url(r'^user/(?P<username>[%&+ \w]+)', views.userhome, name = 'userhome')]
+				# url(r'^user/', views.userhome, name = 'userhome')]
