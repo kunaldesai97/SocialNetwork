@@ -28,6 +28,17 @@ class Person(models.Model):
 		self.password = password
 
 	def insert(self):
-		cursor = connection.cursor();
+		cursor = connection.cursor()
 		cursor.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
 		
+class Friends(models.Model):
+    sender = models.ForeignKey('Person', models.DO_NOTHING,related_name="sender")
+    recipient = models.ForeignKey('Person', models.DO_NOTHING,related_name="recipient")
+    accepted = models.IntegerField()
+    rejected = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'friends'
+            
+	    

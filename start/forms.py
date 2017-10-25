@@ -26,6 +26,11 @@ class LoginForm(forms.ModelForm):
         model = models.Person
         fields = ['username','password']
 
+class HomeForm(forms.Form):
+
+    class Meta:
+        model = models.Friends
+
 # class UserHome(forms.ModelForm):
 
 
