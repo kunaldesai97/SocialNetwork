@@ -216,7 +216,7 @@ class RejectView(View):
 		cursor = connection.cursor()
 		cursor.execute('UPDATE friends SET accepted = %s WHERE sender_id = %s AND recipient_id = %s',[0,int(seid),int(reid)])
 		cursor.execute('UPDATE friends SET rejected = %s WHERE sender_id = %s AND recipient_id = %s',[1,int(seid),int(reid)])
-		return HttpResponse("Friend Request Accepted")
+		return HttpResponse("Friend Request ")
 	
 		
 

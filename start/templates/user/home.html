@@ -83,15 +83,18 @@
    <div class = "friendrequest">
    {% if request.0 != None %}
    <h5>The following people have sent you a friend request:</h5>
-   {% for i,j in request%}
+   {% set testing = 'it worked' -%}
+   {% for i,j in request %}
    <h5>{{i}}</h5>
-   <div class = "inner"><button id = "accept" value={{j}},{{id}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
-   <div class = "inner"><button id = "reject"+{{j}} value={{j}},{{id}} type="submit" class="btn btn-danger" name = "reject" onclick="reject(this)" >Reject</button></div>
+   <div class = "inner"><button id = {{i}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
+   <div class = "inner"><button id = {{id}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
+   <div class = "inner"><p id="{{j}}"></p></div>
    {% endfor %}
    {% else %}
    <h5>No friend requests received</h5>
    {%endif%}
    </div>
+   
   </div>
 </div>
 
@@ -115,7 +118,11 @@ function accept(el)
 	
 	var string = $(el).attr('value');
 	var res = string.split(",")
-	alert("Friend Request Accepted");
+	document.getElementById(res[0]).innerHTML = "Friend Request Accepted";
+	var id = $(el).attr('id')
+	//document.getElementById(res[2]+",accept").disabled = true;
+	alert(id);
+	//alert("Friend Request Accepted");
     $.ajax({
       url:"/accept/"+res[0]+"/"+res[1],
       type: "POST",
@@ -131,7 +138,10 @@ function accept(el)
   {
 	  var string = $(el).attr('value');
 	  var res = string.split(",")
-	  alert("Friend Request Rejected");
+	  document.getElementById(res[0]).innerHTML = "Friend Request Rejected";
+	  document.getElementById(res[2]).disabled = true;
+	  document.getElementById(res[1]).disabled = true;
+	  //alert("Friend Request Rejected");
 	  $.ajax({
 	      url:"/reject/"+res[0]+"/"+res[1],
 	      type: "POST",
