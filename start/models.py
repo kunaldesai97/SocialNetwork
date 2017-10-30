@@ -14,7 +14,7 @@ class Person(models.Model):
 	male = 'M'
 	female = 'F'
 	CHOICES = ((male,'MALE'),(female,'FEMALE'))
-	alpha = RegexValidator(r'^[a-zA-Z]*$', 'Only alphabetic characters are allowed.')
+	alpha = RegexValidator(r'^[a-zA-Z ]*$', 'Only alphabetic characters are allowed.')
 	user_id = models.IntegerField(primary_key=True)
 	name = models.CharField(max_length=250, validators = [alpha])
 	username = models.CharField(unique=True, max_length=250)

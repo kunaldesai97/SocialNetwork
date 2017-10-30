@@ -253,6 +253,7 @@ class RejectView(View):
 	
 	
 def sendreq(request,reqid,seid):
+	print(reqid)
 	cursor.execute('INSERT INTO Friends VALUES(%s,%s,%s,%s)',[seid,reqid,0,0])
 	return HttpResponse('Request Sent')
 	
