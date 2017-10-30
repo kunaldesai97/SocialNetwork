@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login
 from django.views import generic
@@ -17,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 cursor = connection.cursor()
+
 def index(request):
 	return render(request, 'start/home.html')
 	
@@ -139,9 +139,11 @@ def userhome(request,username):
 	friendreq_id = friendreqid(user)
 	friend_reject = friendreject(user)
 	friendrequest = list(zip(friendreq_name,friendreq_id))
- 
+	people = mayknow(user)
+	for i,j in people:
+		print(i,j)
 # 	print(friendrequest)
-	context = {'name':user[0][1],'id':user[0][0],'friend':friend_name,'request':friendrequest,'reject':friend_reject}
+	context = {'name':user[0][1],'id':user[0][0],'friend':friend_name,'request':friendrequest,'reject':friend_reject,'mayknow':people}
 	return render(request,'user/home.html',context)
 
 def friendname(user):
@@ -188,6 +190,37 @@ def friendreject(user):
 			friend_reject.append(i)
 	return friend_reject
 
+def mayknow(user):
+	people_id = []
+	cursor.execute('SELECT user_id FROM Person WHERE user_id <> %s',[user[0][0]])
+	res = cursor.fetchall()
+	senders = []
+	recipients = []
+	cursor.execute('SELECT sender_id FROM Friends WHERE recipient_id = %s',[user[0][0]])
+	senders = cursor.fetchall()
+	cursor.execute('SELECT recipient_id FROM Friends WHERE sender_id = %s',[user[0][0]])
+	recipients = cursor.fetchall()
+	print(senders)
+	print(recipients)
+	for i in res:
+		flag = True
+		for j in senders:
+			if i[0] == j[0]:
+				flag = False
+		
+		for j in recipients:
+			if i[0] == j[0]:
+				flag = False
+		if flag == True:
+			people_id.append(i[0])
+	people_name=[]
+	for i in people_id:
+		cursor.execute('SELECT name FROM Person WHERE user_id = %s',[i])
+		res = cursor.fetchone()
+		people_name.append(res[0])
+	people = list(zip(people_id,people_name))
+	return people
+
 class AcceptView(View):
 	form_class = HomeForm
 	template_name = 'user/home.html'
@@ -218,15 +251,8 @@ class RejectView(View):
 		cursor.execute('UPDATE friends SET rejected = %s WHERE sender_id = %s AND recipient_id = %s',[1,int(seid),int(reid)])
 		return HttpResponse("Friend Request ")
 	
-		
-
-
-
-
-
-
-
-
-
-
-
+	
+def sendreq(request,reqid,seid):
+	cursor.execute('INSERT INTO Friends VALUES(%s,%s,%s,%s)',[seid,reqid,0,0])
+	return HttpResponse('Request Sent')
+	

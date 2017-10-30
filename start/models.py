@@ -8,13 +8,15 @@
 from __future__ import unicode_literals
 from django.db import connection
 from django.db import models
+from django.core.validators import RegexValidator
 
 class Person(models.Model):
 	male = 'M'
 	female = 'F'
 	CHOICES = ((male,'MALE'),(female,'FEMALE'))
+	alpha = RegexValidator(r'^[a-zA-Z]*$', 'Only alphabetic characters are allowed.')
 	user_id = models.IntegerField(primary_key=True)
-	name = models.CharField(max_length=250)
+	name = models.CharField(max_length=250, validators = [alpha])
 	username = models.CharField(unique=True, max_length=250)
 	password = models.CharField(max_length=250)
 	gender = models.CharField(max_length=1, choices = CHOICES)

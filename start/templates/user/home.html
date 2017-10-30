@@ -64,6 +64,10 @@
    .inner{
     display: inline-block;
    }
+   
+   .sendreq{
+   margin-top:60px;
+   }
  
 </style>
 </head>
@@ -79,20 +83,31 @@
    {% for i in friend %}
    <h5>{{i}}</h5>
    {% endfor %}
+   <div class = 'sendreq'>
+   <h5>People You May Know:</h5>
+   {% for i,j in mayknow %}
+   <h5>{{j}}</h5>
+   <button id = {{j}} type ="submit" value = {{i}},{{id}} class="btn btn-primary" onclick="sendrequest(this);">Send Request</button>
+   <br>
+   <br>
+   {%endfor%}
+   </div>
    </div>
    <div class = "friendrequest">
+   {% with beta=1000 %}
+   
    {% if request.0 != None %}
-   <h5>The following people have sent you a friend request:</h5>
-   {% set testing = 'it worked' -%}
+   <h5>The following people have sent you a friend request:</h5>	
    {% for i,j in request %}
    <h5>{{i}}</h5>
    <div class = "inner"><button id = {{i}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
-   <div class = "inner"><button id = {{id}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
+   <div class = "inner"><button id = {{j|add:beta}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
    <div class = "inner"><p id="{{j}}"></p></div>
    {% endfor %}
    {% else %}
    <h5>No friend requests received</h5>
    {%endif%}
+   {%endwith%}
    </div>
    
   </div>
@@ -118,10 +133,12 @@ function accept(el)
 	
 	var string = $(el).attr('value');
 	var res = string.split(",")
-	document.getElementById(res[0]).innerHTML = "Friend Request Accepted";
 	var id = $(el).attr('id')
-	//document.getElementById(res[2]+",accept").disabled = true;
-	alert(id);
+	document.getElementById(id).innerHTML = "Accepted";
+	document.getElementById(id).disabled = true;
+    var n = Number(res[0])+1000;
+	document.getElementById(n).disabled = true;
+	
 	//alert("Friend Request Accepted");
     $.ajax({
       url:"/accept/"+res[0]+"/"+res[1],
@@ -138,10 +155,13 @@ function accept(el)
   {
 	  var string = $(el).attr('value');
 	  var res = string.split(",")
-	  document.getElementById(res[0]).innerHTML = "Friend Request Rejected";
+	  var id = $(el).attr('id')
+	  document.getElementById(id).innerHTML = "Rejected";
 	  document.getElementById(res[2]).disabled = true;
-	  document.getElementById(res[1]).disabled = true;
-	  //alert("Friend Request Rejected");
+	  document.getElementById(id).disabled = true;
+	  //document.getElementById(res[2]).disabled = true;
+	  //document.getElementById(res[1]).disabled = true;
+	  //alert(id);
 	  $.ajax({
 	      url:"/reject/"+res[0]+"/"+res[1],
 	      type: "POST",
@@ -150,6 +170,24 @@ function accept(el)
 	        
 	      }
 	    });
+  }
+  
+  function sendrequest(el)
+  {
+	  var id = $(el).attr('id')
+	  var string = $(el).attr('value')
+	  var res = string.split(',')
+	  document.getElementById(id).innerHTML = "Friend Request Sent";
+	  document.getElementById(id).disabled = true;
+	  $.ajax({
+	      url:"/sendreq/"+res[0]+"/"+res[1],
+	      type: "POST",
+	      data:{
+	        csrfmiddlewaretoken: '{{ csrf_token }}'
+	        
+	      }
+	    });
+	  
   }
 </script>  
 	
