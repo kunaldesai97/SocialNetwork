@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User</title>
+  <meta charset="utf-8" />
+  <!--  {% load staticfiles %}-->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<style>
+	
+.page-header{
+  text-align: center;
+  font-weight: 100;
+  font-size: 250%;
+  color:black;
+   }
+.container-fluid{
+   	background-image: url("{% static 'img/homepage.jpg' %}");
+    background-size: cover;
+    min-height: 665px;
+    min-width: 665px;
+   }	
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+    color: white;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+</style>
+</head>
+<body>
+<div class = "container-fluid">
+<ul>
+  <li><a class="active" href="#home">Home</a></li>
+  <li><a href='friends/{{username}}'>Friends</a></li>
+  <li><a href="#profile">{{name}}</a></li>
+  <!--<li><a href="#about">About</a></li> -->
+</ul>
+
+</div>
+
+
+</body>
+</html>
+	

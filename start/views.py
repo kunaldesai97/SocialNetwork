@@ -139,9 +139,8 @@ def userhome(request,username):
 	friendreq_id = friendreqid(user)
 	friend_reject = friendreject(user)
 	friendrequest = list(zip(friendreq_name,friendreq_id))
+	print(friendrequest)
 	people = mayknow(user)
-	for i,j in people:
-		print(i,j)
 # 	print(friendrequest)
 	context = {'name':user[0][1],'id':user[0][0],'friend':friend_name,'request':friendrequest,'reject':friend_reject,'mayknow':people}
 	return render(request,'user/home.html',context)
@@ -177,6 +176,7 @@ def friendreqid(user):
 	friendreq_id = []
 	cursor.execute('SELECT sender_id FROM Friends WHERE recipient_id = %s AND rejected = 0 AND accepted = 0',[user[0][0]])
 	result = cursor.fetchall()
+	print(result)
 	for i in result:
 		friendreq_id.append(i[0])
 	return friendreq_id
@@ -200,8 +200,8 @@ def mayknow(user):
 	senders = cursor.fetchall()
 	cursor.execute('SELECT recipient_id FROM Friends WHERE sender_id = %s',[user[0][0]])
 	recipients = cursor.fetchall()
-	print(senders)
-	print(recipients)
+# 	print(senders)
+# 	print(recipients)
 	for i in res:
 		flag = True
 		for j in senders:
@@ -256,4 +256,23 @@ def sendreq(request,reqid,seid):
 	print(reqid)
 	cursor.execute('INSERT INTO Friends VALUES(%s,%s,%s,%s)',[seid,reqid,0,0])
 	return HttpResponse('Request Sent')
+
+
+def homepage(request,username):
+	cursor.execute('SELECT * FROM Person WHERE username = %s',[username])
+	user = cursor.fetchall()
+	print(user[0][1])
+	context = {'name':user[0][1],'username':username}
+	return render(request,'user/homepage.html',context)
+
+def friends(request,username):
+	cursor.execute('SELECT * FROM Person WHERE username = %s',[username])
+	user = cursor.fetchall()
+	friend_name = friendname(user)
+	friendreq_name = friendreq(user)
+	friendreq_id = friendreqid(user)
+	friendrequest = list(zip(friendreq_name,friendreq_id))
+	people = mayknow(user)
+	context = {'name':user[0][1],'id':user[0][0],'username':username,'friend':friend_name,'request':friendrequest,'mayknow':people}
+	return render(request,'user/friends.html',context)
 	

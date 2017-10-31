@@ -34,7 +34,7 @@ class Person(models.Model):
 		cursor.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
 		
 class Friends(models.Model):
-    sender = models.ForeignKey('Person', models.DO_NOTHING,related_name="sender")
+    sender = models.ForeignKey('Person',  models.DO_NOTHING,related_name="sender")
     recipient = models.ForeignKey('Person', models.DO_NOTHING,related_name="recipient")
     accepted = models.IntegerField()
     rejected = models.IntegerField()

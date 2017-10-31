@@ -4,7 +4,8 @@ from . import views
 urlpatterns = [
 				url(r'^$', views.LoginFormView.as_view(), name ='login'),
 				url(r'^signup/', views.UserFormView.as_view(), name = 'signupform'),
-				url(r'^user/(?P<username>[%&+ \w]+)', views.userhome, name = 'userhome'),
+				url(r'^user/friends/(?P<username>[%&+ \w]+)',views.friends, name = 'friends'),
+				url(r'^user/(?P<username>[%&+ \w]+)', views.homepage, name = 'userhome'),
 				url(r'^accept/(?P<seid>[%&+ \w]+)/(?P<reid>[%&+ \w]+)',views.AcceptView.as_view(), name = 'accept'),
 				url(r'^reject/(?P<seid>[%&+ \w]+)/(?P<reid>[%&+ \w]+)',views.RejectView.as_view(), name = 'reject'),
 				url(r'^sendreq/(?P<reqid>[%&+ \w]+)/(?P<seid>[%&+ \w]+)',views.sendreq, name = 'sendrequest'),

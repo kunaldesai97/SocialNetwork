@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User</title>
+  <meta charset="utf-8" />
+  <!--  {% load staticfiles %}-->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<style>
+
+ .inner{
+    display: inline-block;
+   }
+
+.content{
+   
+   display:flex
+   }
+
+
+.page-header{
+  text-align: center;
+  font-weight: 100;
+  font-size: 250%;
+  color:black;
+   }
+   
+.container-fluid{
+   	background-image: url("{% static 'img/homepage.jpg' %}");
+    background-size: cover;
+    min-height: 665px;
+    min-width: 665px;
+   }		
+	
+.friendrequest{
+    color:black;
+	margin-left: 20%;
+	flex:1
+   
+   }
+  
+.sendreq{
+    color:black;
+	margin-left: 20%;
+	flex:1
+   
+   }
+	
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+    color: white;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+</style>
+</head>
+<body>
+<div class = "container-fluid">
+<ul>
+  <li><a href='/user/{{username}}'>Home</a></li>
+  <li><a class="active" href="#request">Friends</a></li>
+  <li><a href="#profile">{{name}}</a></li>
+  <!--<li><a href="#about">About</a></li> -->
+</ul>
+<br>
+<div class = content>
+   <div class ="friends">
+   {% if friend.0 != None%}
+ <h3>Your friends are:</h3>
+   {% for i in friend %}
+   <h5>{{i}}</h5>
+   {% endfor %}
+   {% else %}
+   <h5>You don't have any friends</h5>
+   {%endif%}
+   </div>
+   <div class = "friendrequest">
+   {% with beta=1000 %}
+   
+   {% if request.0 != None %}
+   <h5>The following people have sent you a friend request:</h5>	
+   <br>
+   {% for i,j in request %}
+   <h5>{{i}}</h5>
+   <div class = "inner"><button id = {{i}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
+   <div class = "inner"><button id = {{j|add:beta}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
+   <div class = "inner"><p id="{{j}}"></p></div>
+   {% endfor %}
+   {% else %}
+   <h5>No friend requests received</h5>
+   {%endif%}
+   {%endwith%}
+   </div>
+   <div class = 'sendreq'>
+   <h5>People You May Know:</h5>
+   <br>
+   {% for i,j in mayknow %}
+   <h5>{{j}}</h5>
+   <button id = {{j}} type ="submit" value = {{i}},{{id}} class="btn btn-primary" onclick="sendrequest(this);">Send Request</button>
+   <br>
+   <br>
+   {%endfor%}
+   </div>
+   
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script type="text/javascript"></script>
+<script>
+function accept(el)
+  {
+	
+	var string = $(el).attr('value');
+	var res = string.split(",")
+	var id = $(el).attr('id')
+	document.getElementById(id).innerHTML = "Accepted";
+	document.getElementById(id).disabled = true;
+    var n = Number(res[0])+1000;
+	document.getElementById(n).disabled = true;
+	
+	//alert("Friend Request Accepted");
+    $.ajax({
+      url:"/accept/"+res[0]+"/"+res[1],
+      type: "POST",
+      data:{
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        
+      }
+    });
+  }
+  
+  function reject(el)
+  {
+	  var string = $(el).attr('value');
+	  var res = string.split(",")
+	  var id = $(el).attr('id')
+	  document.getElementById(id).innerHTML = "Rejected";
+	  document.getElementById(res[2]).disabled = true;
+	  document.getElementById(id).disabled = true;
+	  //document.getElementById(res[2]).disabled = true;
+	  //document.getElementById(res[1]).disabled = true;
+	  //alert(id);
+	  $.ajax({
+	      url:"/reject/"+res[0]+"/"+res[1],
+	      type: "POST",
+	      data:{
+	        csrfmiddlewaretoken: '{{ csrf_token }}'
+	        
+	      }
+	    });
+  }
+  
+  function sendrequest(el)
+  {
+	  var id = $(el).attr('id')
+	  var string = $(el).attr('value')
+	  var res = string.split(',')
+	  document.getElementById(id).innerHTML = "Friend Request Sent";
+	  document.getElementById(id).disabled = true;
+	  $.ajax({
+	      url:"/sendreq/"+res[0]+"/"+res[1],
+	      type: "POST",
+	      data:{
+	        csrfmiddlewaretoken: '{{ csrf_token }}'
+	        
+	      }
+	    });
+	  
+  }
+  </script>  
+  
+  </body>
+</html>
+	
