@@ -31,8 +31,8 @@ class Person(models.Model):
 
 	def insert(self):
 		cursor = connection.cursor()
-		cursor.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
-		
+		#cursor.execute('INSERT INTO Person VALUES(%s,%s,%s,%s,%s,%s)',[self.user_id,self.name,self.username,self.password,self.gender,self.emailid])
+		cursor.execute('INSERT INTO Person(name,username,password,gender,emailid) VALUES(%s,%s,%s,%s,%s)',[self.name,self.username,self.password,self.gender,self.emailid])
 class Friends(models.Model):
     sender = models.ForeignKey('Person',  models.DO_NOTHING,related_name="sender")
     recipient = models.ForeignKey('Person', models.DO_NOTHING,related_name="recipient")
@@ -43,4 +43,4 @@ class Friends(models.Model):
         managed = False
         db_table = 'friends'
             
-	    
+

@@ -1,8 +1,9 @@
 from django.conf.urls import url, include
 from . import views
+from django.contrib.auth.views import login
 
 urlpatterns = [
-				url(r'^$', views.LoginFormView.as_view(), name ='login'),
+ 				url(r'^$', views.LoginFormView.as_view(), name ='login'),
 				url(r'^signup/', views.UserFormView.as_view(), name = 'signupform'),
 				url(r'^user/friends/(?P<username>[%&+ \w]+)',views.friends, name = 'friends'),
 				url(r'^user/(?P<username>[%&+ \w]+)', views.homepage, name = 'userhome'),

@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL='/signup'
 
 # Application definition
 
@@ -81,11 +82,34 @@ WSGI_APPLICATION = 'socialnetwork.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         # 'ENGINE': 'django.db.backends.oracle',
+#         # 'NAME': os.path.join(BASE_DIR, 'oracle'),
+#     }
+#   'default': {
+#   'ENGINE':   'django.db.backends.oracle',
+#   'NAME':     'XE',
+#   'USER':     'django',
+#   'PASSWORD': 'django',
+#   }
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # 'ENGINE': 'django.db.backends.oracle',
-        # 'NAME': os.path.join(BASE_DIR, 'oracle'),
+        'NAME': 'django',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'OPTIONS': {
+          'autocommit': True,
+        },
     }
 }
 
@@ -107,6 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization

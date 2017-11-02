@@ -82,6 +82,7 @@ li a:hover:not(.active) {
   <li><a href='/user/{{username}}'>Home</a></li>
   <li><a class="active" href="#request">Friends</a></li>
   <li><a href="#profile">{{name}}</a></li>
+  <li><a href='/'>Logout</a></li>
   <!--<li><a href="#about">About</a></li> -->
 </ul>
 <br>
@@ -105,6 +106,7 @@ li a:hover:not(.active) {
    <br>
    {% for i,j in request %}
    <h5>{{i}}</h5>
+   <br>
    <div class = "inner"><button id = {{i}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
    <div class = "inner"><button id = {{j|add:beta}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
    <div class = "inner"><p id="{{j}}"></p></div>

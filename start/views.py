@@ -10,9 +10,9 @@ from django.core.exceptions import ValidationError
 from django import forms
 from django.contrib import messages 
 from django.core.urlresolvers import reverse
-from django.db import connection
+from django.db import connection, connections
 from django.views.decorators.csrf import csrf_exempt
-
+from django.core.cache import cache
 # Create your views here.
 
 cursor = connection.cursor()
@@ -68,6 +68,7 @@ class LoginFormView(View):
 	template_name  = 'start/home.html'
 	def get(self, request):
 		form = self.form_class(None)
+		cache.clear()
 		return render(request, self.template_name, {'form':form})
 
 
@@ -147,15 +148,15 @@ def userhome(request,username):
 
 def friendname(user):
 	cursor.execute('SELECT recipient_id FROM Friends WHERE sender_id = %s AND accepted = 1',[user[0][0]])
-	result1 = cursor.fetchall()
+	result1 = list(cursor.fetchall())
 # 	print(result1)
 	cursor.execute('SELECT sender_id FROM Friends WHERE recipient_id = %s AND accepted = 1',[user[0][0]])
 	result2 = cursor.fetchall()
 	for i in result2:
-		result1.append(i)
+		result1.append(i[0])
 	friendid = []
 	for i in result1:
-		friendid.append(i[0])
+		friendid.append(i)
 	friend_name = []
 	for i in friendid:
 		cursor.execute('SELECT name FROM Person WHERE user_id = %s',[i])
