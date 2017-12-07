@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User</title>
+  <meta charset="utf-8" />
+  
+  <!--  {% load staticfiles %}-->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	<style>
+    .profile{
+    background-image: url("{% static 'img/background.png' %}");
+    background-size: cover;
+    min-height: 665px;
+    min-width: 665px;
+    display:flex;
+    
+    }
+    
+    .dp{
+    margin-top:5px;
+    margin-left:10px;
+    
+    }
+    .name{
+    text-align: center;
+    margin-left:10%;
+    }
+    
+    .content{
+    margin-top:50px;
+    }
+	
+	
+	</style>
+	</head>
+<body>
+<!--{{name}}-->
+<!--<img src="/media/media/Kunal.jpg"/>-->
+<div class = "profile">
+<div class = "dp">
+<img src=/media/{{pic}} height="250" width="250"/>
+</div>
+<div class = "name">
+<h3>{{name}}</h3>
+<div class = "content">
+<h4>Email ID: {{email}}</h4>
+<br>
+<h4>Date of Birth: {{dob}}</h4>
+<br>
+<h4>Gender: {{gender}}</h4>
+<br>
+<h4>Profession: {{profession}}</h4>
+<br>
+<h4>University: {{university}}</h4>
+<br>
+<h4>Languages: {{languages}}</h4>
+<br>
+<h4>Hobbies: {{hobbies}}</h4>
+</div>
+</div>
+
+
+</div>
+
+
+</body>
+</html>

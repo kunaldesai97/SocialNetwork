@@ -26,7 +26,7 @@
    }
    
 .container-fluid{
-   	background-image: url("{% static 'img/homepage.jpg' %}");
+   	background-image: url("{% static 'img/background.png' %}");
     background-size: cover;
     min-height: 665px;
     min-width: 665px;
@@ -74,15 +74,17 @@ li a:hover:not(.active) {
 .active {
     background-color: #4CAF50;
 }
+
+
 </style>
 </head>
 <body>
 <div class = "container-fluid">
 <ul>
-  <li><a href='/user/{{username}}'>Home</a></li>
+  <li><a href='/user/{{username}}'>News Feed</a></li>
   <li><a class="active" href="#request">Friends</a></li>
-  <li><a href="#profile">{{name}}</a></li>
-  <li><a href='/'>Logout</a></li>
+  <li><a href='/user/profile/{{username}}'>{{name}}</a></li>
+  <li><a href='/logout'>Logout</a></li>
   <!--<li><a href="#about">About</a></li> -->
 </ul>
 <br>
@@ -90,9 +92,9 @@ li a:hover:not(.active) {
    <div class ="friends">
    {% if friend.0 != None%}
  <h3>Your friends are:</h3>
-   {% for i in friend %}
+   {% for i,j in friend %}
    <br>
-   <h5>{{i}}</h5>
+   <h5><a href='/user/displayprofile/{{i}}' style="color:black">{{j}}</a></h5>
    {% endfor %}
    {% else %}
    <h5>You don't have any friends</h5>
@@ -104,8 +106,8 @@ li a:hover:not(.active) {
    {% if request.0 != None %}
    <h5>The following people have sent you a friend request:</h5>	
    <br>
-   {% for i,j in request %}
-   <h5>{{i}}</h5>
+   {% for i,j,k in request %}
+   <h5><a href = '/user/displayprofile/{{k}}' style="color:black">{{i}}</a></h5>
    <br>
    <div class = "inner"><button id = {{i}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-success" name = {{j}} onclick="accept(this);">Accept</button></div> 
    <div class = "inner"><button id = {{j|add:beta}} value={{j}},{{id}},{{i}} type="submit" class="btn btn-danger" name = {{j}}  onclick="reject(this)" >Reject</button></div>
@@ -119,14 +121,14 @@ li a:hover:not(.active) {
    <div class = 'sendreq'>
    <h5>People You May Know:</h5>
    <br>
-   {% for i,j in mayknow %}
-   <h5>{{j}}</h5>
+   {% for i,j,k in mayknow %}
+   <h5><a href = '/user/displayprofile/{{k}}' style="color:black">{{j}}</a></h5>
    <button id = {{j}} type ="submit" value = {{i}},{{id}} class="btn btn-primary" onclick="sendrequest(this);">Send Request</button>
    <br>
    <br>
    {%endfor%}
    </div>
-   
+   </div>
 </div>
 
 

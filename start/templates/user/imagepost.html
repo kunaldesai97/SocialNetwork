@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User</title>
+  <meta charset="utf-8" />
+  <!--  {% load staticfiles %}-->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	
+	<style>
+	
+		
+form {
+width: 350px;
+padding: 20px;
+border: 1px solid #270644;
+}
+	.content{
+	text-align:center;
+	background-image: url("{% static 'img/background.png' %}");
+    background-size: cover;
+    min-height: 665px;
+    min-width: 665px;
+	}
+	
+	.postdata{
+	margin-top:15%;
+	margin-left:35%;
+	}
+	
+	.heading{
+
+	text-align:center;
+	}
+	
+	
+	</style>
+</head>
+<body>
+<div class = "content">
+<div class = "heading">
+<h2> Post an image!! </h2>
+</div>
+<div class = "postdata">
+<form method="post" enctype="multipart/form-data">
+ <table>
+	{% csrf_token %}
+    {{ form.as_table }}
+</table>
+	<br>
+	<button type="submit" class="btn btn-success">Submit</button>
+	</form>
+</div>
+</div>
+</body>
+</html>

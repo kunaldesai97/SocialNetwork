@@ -7,6 +7,12 @@
 	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type = "text/css"/>
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
 <style>
+
+form {
+width: 350px;
+padding: 20px;
+border: 1px solid #270644;
+}
 		.page-header{
   text-align: center;
   font-weight: 100;
@@ -30,7 +36,7 @@
 
    .field{
    	margin-top: 100px;
-    text-align: center;
+   	margin-left:35%;
     color:white;
  
    }
@@ -45,9 +51,11 @@
  	</div>
  	<div class='field'>
  	<form method="post">
-    	{% csrf_token %}
-    	{{ form.as_p }}
-    <button type="submit">Sign up</button>
+ 	<table>
+ 		{% csrf_token %}
+    	{{ form.as_table }}
+ 	</table> 	 
+ 	<button type="submit" class = "btn btn-success">Sign up</button>
   </form>
 </div>
 </div>

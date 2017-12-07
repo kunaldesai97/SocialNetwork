@@ -32,8 +32,8 @@ LOGIN_URL='/signup'
 # Application definition
 
 INSTALLED_APPS = [
-    'start',
     'django.contrib.admin',
+    'start',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -76,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'socialnetwork.wsgi.application'
+
 
 
 # Database
@@ -152,3 +153,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
