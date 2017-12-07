@@ -20,9 +20,3 @@ urlpatterns = [
 				url(r'^logout/', views.logout, name = 'logout'),
 				]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# if settings.DEBUG:
-# 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
-# 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
-# 				] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-				# url(r'^accept/', views.accept, name = 'accept')]
-				# url(r'^user/', views.userhome, name = 'userhome')]

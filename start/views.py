@@ -17,10 +17,7 @@ from OpenSSL.rand import load_file
 # Create your views here.
 
 cursor = connection.cursor()
-# LoginPage
-def index(request):
-	return render(request, 'start/home.html')
-	
+# SignUp Page	
 class UserFormView(View):
 	form_class = SignUpForm
 	template_name = 'start/signup_form.html'
@@ -48,7 +45,7 @@ class UserFormView(View):
 
 		return render(request, self.template_name,{'form':form})
 
-
+#Login Page
 class LoginFormView(View):
 	form_class = LoginForm
 	template_name  = 'start/home.html'
@@ -93,22 +90,7 @@ class LoginFormView(View):
 		return render(request, self.template_name, {'form':form})
 
 
-def accept(request):
-	return HttpResponse('Friend Request Accepted')
-	
-
-# def userhome(request,username):
-# 	cursor.execute('SELECT * FROM Person WHERE username = %s',[username])
-# 	user = cursor.fetchall()
-# 	friend_name = friendname(user)
-# 	friendreq_name = friendreq(user)
-# 	friendreq_id = friendreqid(user)
-# 	friend_reject = friendreject(user)
-# 	friendrequest = list(zip(friendreq_name,friendreq_id))
-# 	people = mayknow(user)
-# 	context = {'name':user[0][1],'id':user[0][0],'friend':friend_name,'request':friendrequest,'reject':friend_reject,'mayknow':people}
-# 	return render(request,'user/home.html',context)
-
+#Returns friends'username and their name
 def friendname(user):
 	cursor.execute('SELECT recipient_id FROM Friends WHERE sender_id = %s AND accepted = 1',[user[0][0]])
 	result1 = list(cursor.fetchall())
@@ -132,6 +114,7 @@ def friendname(user):
 		friend_name.append(result[0])
 	return list(zip(friendusername,friend_name))
 
+#Returns the friend request sender's name
 def friendreq(user):
 	friendreq_id = friendreqid(user)
 	friendreq_name = []
@@ -141,6 +124,8 @@ def friendreq(user):
 		friendreq_name.append(result[0])
 	return friendreq_name
 
+
+#Returns the friend request sender's username
 def friendrequsername(user):
 	friendreq_id = friendreqid(user)
 	friendreq_username = []
@@ -150,6 +135,8 @@ def friendrequsername(user):
 		friendreq_username.append(result[0])
 	return friendreq_username
 
+
+#Returns the friend request sender's user_id
 def friendreqid(user):
 	friendreq_id = []
 	cursor.execute('SELECT sender_id FROM Friends WHERE recipient_id = %s AND rejected = 0 AND accepted = 0',[user[0][0]])
@@ -158,6 +145,7 @@ def friendreqid(user):
 		friendreq_id.append(i[0])
 	return friendreq_id
 
+#Returns the user_id of person whose friend request is rejected
 def friendreject(user):
 	friend_reject = []
 	cursor.execute('SELECT sender_id FROM Friends WHERE recipient_id = %s AND rejected = 1',[user[0][0]])
@@ -167,6 +155,8 @@ def friendreject(user):
 			friend_reject.append(i)
 	return friend_reject
 
+
+#Returns details of other users in network
 def mayknow(user):
 	people_id = []
 	cursor.execute('SELECT user_id FROM Person WHERE user_id <> %s',[user[0][0]])
@@ -202,6 +192,8 @@ def mayknow(user):
 	people = list(zip(people_id,people_name,people_username))
 	return people
 
+
+#To accept the friend request
 class AcceptView(View):
 	form_class = HomeForm
 	template_name = 'user/home.html'
@@ -217,6 +209,8 @@ class AcceptView(View):
 		cursor.execute('UPDATE friends SET accepted = %s WHERE sender_id = %s AND recipient_id = %s',[1,int(seid),int(reid)])
 		return HttpResponse("Friend Request Accepted")
 		
+		
+#To reject the friend request
 class RejectView(View):
 	form_class = HomeForm
 	template_name = 'user/home.html'
@@ -232,13 +226,13 @@ class RejectView(View):
 		cursor.execute('UPDATE friends SET rejected = %s WHERE sender_id = %s AND recipient_id = %s',[1,int(seid),int(reid)])
 		return HttpResponse("Friend Request ")
 	
-	
+#To send request to other users
 def sendreq(request,reqid,seid):
-	print(reqid)
 	cursor.execute('INSERT INTO Friends VALUES(%s,%s,%s,%s)',[seid,reqid,0,0])
 	return HttpResponse('Request Sent')
 
 
+#News Feed Page
 def homepage(request,username):
 	if 'name' in request.session.keys():
 		if request.session['name']==username:
@@ -284,6 +278,7 @@ def homepage(request,username):
 	else:
 		return HttpResponse('You are logged out')
 
+#Returns the list of friends, friend requests and people the user may know
 def friends(request,username):
 	if 'name' in request.session.keys():
 		if request.session['name']==username:
@@ -304,6 +299,7 @@ def friends(request,username):
 		return HttpResponse('You are logged out')
 			
 
+#To create a profile for user
 class ProfileFormView(View):
 	form_class = ProfileForm
 	template_name = 'user/profile.html'
@@ -360,7 +356,9 @@ class ProfileFormView(View):
 		user = cursor.fetchall()
 		context = {'name':user[0][1],'username':username,'form':form}
 		return render(request, self.template_name,context)
-	
+
+
+#Display user's profile
 def displayProfile(request,username):
 	cursor.execute('SELECT * FROM Person WHERE username = %s',[username])
 	user = cursor.fetchall()
@@ -391,6 +389,8 @@ def displayProfile(request,username):
 			'university':prof[0][5],'languages':prof[0][6],'hobbies':prof[0][7],'gender':gender,"pic":pic}
 		return render(request,'user/display.html',context)
 	
+	
+#To post image on News Feed
 class ImagePostFormView(View):
 	form = form_class = ImagePostForm
 	template_name = 'user/imagepost.html'
@@ -420,6 +420,7 @@ class ImagePostFormView(View):
 			user.save()
 			return HttpResponseRedirect('/user/%s' %username)
 	
+#Returns the user_id of friends
 def friendid(user):
 	cursor.execute('SELECT recipient_id FROM Friends WHERE sender_id = %s AND accepted = 1',[user[0][0]])
 	result1 = [res[0] for res in cursor.fetchall()]
@@ -432,9 +433,12 @@ def friendid(user):
 		friend_id.append(i)
 	return friend_id
 
+#To insert the user_id of user who has liked the image post.
 def like(request,image_id,user_id):
 	cursor.execute('INSERT INTO likes VALUES(%s,%s)',[user_id,image_id])
+	
 
+#To logout from the account
 def logout(request):
 		del request.session['name']
 		request.session.flush()
